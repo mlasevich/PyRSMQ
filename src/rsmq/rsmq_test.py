@@ -6,6 +6,8 @@ import unittest
 
 import fakeredis
 
+from .rsmq import RedisSMQ
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -20,7 +22,12 @@ class TestUnitTests(unittest.TestCase):
         unittest_loaded = True
         self.assertTrue(unittest_loaded)
 
-    def 
+    def test_create_queue(self):
+        ''' Test Creating of the Queue '''
+        client = fakeredis.FakeStrictRedis()
+        queue = RedisSMQ(client=client)
+        queue.createQueue().qname('test-queue').exec()
+
 
 if __name__ == '__main__':
     unittest.main()

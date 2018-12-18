@@ -3,8 +3,15 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
+[scripts]
+test = 'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov="src" .'
+
 [dev-packages]
 fakeredis = "*"
+pytest = "*"
+pytest-cov = "*"
+pylint = "*"
+mock = "*"
 
 [packages]
 redis = ">=3.0.0"

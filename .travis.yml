@@ -15,10 +15,9 @@ cache: pip
 
 # command to install dependencies
 install:
-  - pip install -r requirements.txt
-  - pip install -r requirements-tests.txt
-
-# command to run tests
-script:
-  - pytest
+  - 'pip install pipenv'
+  - 'pipenv sync'
+script: 
+#  - 'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov="src" .'
+  -  'pipenv run test'
 
