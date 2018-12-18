@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+fakeredis = "*"
 
 [packages]
 redis = ">=3.0.0"
