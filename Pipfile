@@ -8,7 +8,6 @@ test = 'pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=s
 
 [dev-packages]
 fakeredis = "*"
-pytest = "*"
 pytest-cov = "*"
 pylint = "*"
 mock = "*"
