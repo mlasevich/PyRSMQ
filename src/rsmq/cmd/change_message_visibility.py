@@ -1,0 +1,37 @@
+'''
+
+'''
+
+from .base_command import BaseRSMQCommand
+from .exceptions import NoMessageInQueue
+
+
+class ChangeMessageVisibilityCommand(BaseRSMQCommand):
+    '''
+    Change Message Visibility Timeout Command
+    '''
+
+    PARAMS = {'qname': {'required': True,
+                        'value': None},
+              'id': {'required': True,
+                     'value': None},
+              'vt': {'required': False,
+                     'value': None},
+              }
+
+    def exec_command(self):
+        ''' Execute '''
+        client = self.client
+
+        queue_base = self.queue_base
+        queue = self.queue_def()
+
+        ts = int(queue['ts'])
+        vt = int(queue['vt'] if self.get_vt is None else self.get_vt)
+        vtimeout = ts + (vt * 1000)
+        result = client.evalsha(
+            self.changeMessageVisibilitySha1, 3, queue_base, self.get_id, vtimeout)
+        if not result:
+            raise NoMessageInQueue(self.get_qname)
+        [uid, message, rc, ts] = result
+        return {'id': uid, 'message': message, 'rc': rc, 'ts': ts}

@@ -1,0 +1,30 @@
+'''
+
+'''
+
+from .base_command import BaseRSMQCommand
+from .exceptions import NoMessageInQueue
+
+
+class PopMessageCommand(BaseRSMQCommand):
+    '''
+    Receive Message and delete it
+    '''
+
+    PARAMS = {'qname': {'required': True,
+                        'value': None}
+              }
+
+    def exec_command(self):
+        ''' Execute '''
+        client = self.client
+
+        queue_base = self.queue_base
+        queue = self.queue_def()
+
+        ts = int(queue['ts'])
+        result = client.evalsha(self.popMessageSha1, 2, queue_base, ts)
+        if not result:
+            raise NoMessageInQueue(self.get_qname)
+        [uid, message, rc, ts] = result
+        return {'uid': uid, 'message': message, 'rc': rc, 'ts': ts}

@@ -1,0 +1,2 @@
+-i https://pypi.org/simple
+redis==3.0.1
