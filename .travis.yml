@@ -24,3 +24,14 @@ script:
 after_success:
   - coverage report
   - coveralls
+
+deploy:
+  provider: pypi
+  user: mlasevich
+  password:
+    secure: $PYPI_SECRET_TOKEN
+  skip_existing: true
+  distributions: "sdist bdist_wheel"
+  on:
+    branch: release/*
+    tags: true
