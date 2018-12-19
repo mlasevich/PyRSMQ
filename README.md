@@ -12,6 +12,10 @@ Python implementation of https://github.com/smrchy/rsmq.
 
 ## PyRSMQ Release Notes
 
+* 0.2.0 - Adding P2 support
+  * Python 2 support
+  * Some Unit tests
+
 * 0.1.0 - initial version
     * Initial port
     * Missing "Realtime" mode

@@ -22,7 +22,6 @@ script:
   -  'pipenv run test'
 
 after_success:
-  - coverage report
   - coveralls
 
 deploy:
