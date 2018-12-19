@@ -4,5 +4,5 @@
 <path>/${PROJECT_DIR_NAME}/src</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 3.6</pydev_property>
-<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">prsmq (pipenv)</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">PyRSMQ (pipenv)</pydev_property>
 </pydev_project>
