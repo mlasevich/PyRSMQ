@@ -38,4 +38,4 @@ class SetQueueAttributesCommand(BaseRSMQCommand):
             self.log.debug("No queue attribute changes")
         _result = tx.execute()
 
-        return self.parent.getQueueAttributes().qname(self.get_qname).exec()
+        return self.parent.getQueueAttributes().qname(self.get_qname).execute()

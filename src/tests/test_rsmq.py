@@ -50,7 +50,7 @@ class TestUnitTests(unittest.TestCase):
         queue = RedisSMQ(client=client)
         queue_name = 'test-queue'
         queue_key = 'rsmq:%s:Q' % queue_name
-        queue.createQueue().qname(queue_name).exec()
+        queue.createQueue().qname(queue_name).execute()
         keys = client.keys('*')
         self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
         queues = client.smembers('rsmq:QUEUES')
@@ -66,7 +66,7 @@ class TestUnitTests(unittest.TestCase):
         queue = RedisSMQ(client=client)
         queue_name = 'test-queue-2'
         queue_key = 'rsmq:%s:Q' % queue_name
-        queue.createQueue(qname=queue_name, vt=15).delay(10).exec()
+        queue.createQueue(qname=queue_name, vt=15).delay(10).execute()
         keys = client.keys('*')
         self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
         queues = client.smembers('rsmq:QUEUES')
@@ -83,7 +83,7 @@ class TestUnitTests(unittest.TestCase):
         queue = RedisSMQ(client=client)
         queue_name = 'test-queue-delete'
         queue_key = 'rsmq:%s:Q' % queue_name
-        queue.createQueue().qname(queue_name).exec()
+        queue.createQueue().qname(queue_name).execute()
         keys = client.keys('*')
         self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
         queues = client.smembers('rsmq:QUEUES')
@@ -91,7 +91,7 @@ class TestUnitTests(unittest.TestCase):
         queue_details = client.hgetall(queue_key)
         self.assertTrue(
             {'vt': '30', 'delay': '0', 'maxsize': '65565'}.items() <= queue_details.items())
-        result = queue.deleteQueue(qname=queue_name).exec()
+        result = queue.deleteQueue(qname=queue_name).execute()
         self.assertEqual(result, True)
         queue_details = client.hgetall(queue_key)
         self.assertEqual(queue_details, {})
@@ -103,7 +103,7 @@ class TestUnitTests(unittest.TestCase):
         queue_name = 'test-queue-attr'
         queue = RedisSMQ(client=client, qname=queue_name)
         queue_key = 'rsmq:%s:Q' % queue_name
-        queue.createQueue(vt=15, delay=10).exec()
+        queue.createQueue(vt=15, delay=10).execute()
         keys = client.keys('*')
         self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
         queues = client.smembers('rsmq:QUEUES')
@@ -111,7 +111,7 @@ class TestUnitTests(unittest.TestCase):
         queue_details = client.hgetall(queue_key)
         self.assertQueueAttributes(
             {'vt': '15', 'delay': '10', 'maxsize': '65565'}, queue_details)
-        attributes = queue.getQueueAttributes(qname=queue_name).exec()
+        attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertQueueAttributes({'vt': '15',
                                     'delay': '10',
                                     'maxsize': '65565',
@@ -119,8 +119,9 @@ class TestUnitTests(unittest.TestCase):
                                     'totalsent': 0,
                                     'msgs': 0,
                                     'hiddenmsgs': 0}, attributes)
-        attributes_1 = queue.setQueueAttributes(vt=30, maxsize=1024, delay=1).exec()
-        attributes = queue.getQueueAttributes(qname=queue_name).exec()
+        attributes_1 = queue.setQueueAttributes(
+            vt=30, maxsize=1024, delay=1).execute()
+        attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertDictEqual(attributes, attributes_1)
         self.assertQueueAttributes({'vt': '30',
                                     'delay': '1',
@@ -137,7 +138,7 @@ class TestUnitTests(unittest.TestCase):
         queue_name = 'test-queue-attr'
         queue = RedisSMQ(client=client, qname=queue_name)
         queue_key = 'rsmq:%s:Q' % queue_name
-        queue.createQueue(vt=15, delay=10).exec()
+        queue.createQueue(vt=15, delay=10).execute()
         keys = client.keys('*')
         self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
         queues = client.smembers('rsmq:QUEUES')
@@ -145,7 +146,7 @@ class TestUnitTests(unittest.TestCase):
         queue_details = client.hgetall(queue_key)
         self.assertQueueAttributes(
             {'vt': '15', 'delay': '10', 'maxsize': '65565'}, queue_details)
-        attributes = queue.getQueueAttributes(qname=queue_name).exec()
+        attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertQueueAttributes({'vt': '15',
                                     'delay': '10',
                                     'maxsize': '65565',
@@ -153,8 +154,9 @@ class TestUnitTests(unittest.TestCase):
                                     'totalsent': 0,
                                     'msgs': 0,
                                     'hiddenmsgs': 0}, attributes)
-        attributes_1 = queue.setQueueAttributes(vt=-3, maxsize=-2, delay=-1).exec()
-        attributes = queue.getQueueAttributes(qname=queue_name).exec()
+        attributes_1 = queue.setQueueAttributes(
+            vt=-3, maxsize=-2, delay=-1).execute()
+        attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertDictEqual(attributes, attributes_1)
         self.assertQueueAttributes({'vt': '15',
                                     'delay': '10',

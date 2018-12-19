@@ -188,7 +188,7 @@ class BaseRSMQCommand():
                 return False
         return True
 
-    def exec(self):
+    def execute(self):
         ''' Execute Command '''
         if self._exceptions:
             return self._exec()

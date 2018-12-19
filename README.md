@@ -55,8 +55,8 @@ the queue. This can remove the need for _Consumer_ to constantly poll the queue 
 
 ## Python Implementation Notes
 
-This version is heavily based on Java version (https://github.com/igr/jrsmq), which in turn is based on 
-the original Node.JS version.
+This version is heavily based on Java version (https://github.com/igr/jrsmq), which in turn is
+based on the original Node.JS version.
 
 ### API
 To start with, best effort is made to maintain same method/parameter/usablity named of both version
@@ -65,17 +65,17 @@ To start with, best effort is made to maintain same method/parameter/usablity na
 Although much of the original API is still present, some alternatives are added to make life a bit 
 easier.
 
-For example, while you can set any available parameter to command using the "setter" method, you can 
+For example, while you can set any available parameter to command using the "setter" method, you can
 also simply specify the parameters when creating the command. So these two commands do same thing:
 
-    rqsm.createQueue().qname("my-queue").vt(20).exec()
+    rqsm.createQueue().qname("my-queue").vt(20).execute()
 
-    rqsm.createQueue(qname="my-queue", vt=20).exec()
+    rqsm.createQueue(qname="my-queue", vt=20).execute()
 
 In addition, when creating a main controller, any non-controller parameters specified will become 
-defaults for all commands created via this controller - so, for example, you if you plan to work with
-only one queue using this controller, you can specify the qname parameter during creation of the controller
-and not need to specify it in every command.
+defaults for all commands created via this controller - so, for example, you if you plan to work 
+with only one queue using this controller, you can specify the qname parameter during creation of
+the controller and not need to specify it in every command.
 
 ### General Usage Approach
 
@@ -97,7 +97,7 @@ However, if you do not wish to use exceptions, you can turn them off on per-comm
 per-controller basis by using `.exceptions(False)` on the relevant object. For example, the
 following will create Queue only if it does not exist without throwing an exception:
 
-    rsmq.createQueue().exceptions(False).exec()
+    rsmq.createQueue().exceptions(False).execute()
 
 
 ## Usage
@@ -121,20 +121,20 @@ from rsmq.rsmq import RedisSMQ
     
     
     # Delete Queue if it already exists, ignoring exceptions
-    queue.deleteQueue().exceptions(False).exec()
+    queue.deleteQueue().exceptions(False).execute()
     
     # Create Queue with default visibility timeout of 20 and delay of 0
     # demonstrating here both ways of setting parameters
-    queue.createQueue(delay=0).vt(20).exec()
+    queue.createQueue(delay=0).vt(20).execute()
     
     # Send a message with a 2 second delay
-    message_id = queue.sendMessage(delay=2).message("Hello World").exec()
+    message_id = queue.sendMessage(delay=2).message("Hello World").execute()
     
-    pprint({'queue_status': queue.getQueueAttributes().exec()})
+    pprint({'queue_status': queue.getQueueAttributes().execute()})
     
     # Try to get a message - this will not succeed, as our message has a delay and no other
     # messages are in the queue
-    msg = queue.receiveMessage().exceptions(False).exec()
+    msg = queue.receiveMessage().exceptions(False).execute()
     
     # Message should be False as we got no message
     pprint({"Message": msg})
@@ -143,9 +143,9 @@ from rsmq.rsmq import RedisSMQ
     # Wait for our message to become visible
     time.sleep(2)
     
-    pprint({'queue_status': queue.getQueueAttributes().exec()})
+    pprint({'queue_status': queue.getQueueAttributes().execute()})
     # Get our message
-    msg = queue.receiveMessage().exec()
+    msg = queue.receiveMessage().execute()
     
     # Message should now be there
     pprint({"Message": msg})
@@ -153,9 +153,9 @@ from rsmq.rsmq import RedisSMQ
     # Delete Message
     queue.deleteMessage(id=msg['id'])
     
-    pprint({'queue_status': queue.getQueueAttributes().exec()})
+    pprint({'queue_status': queue.getQueueAttributes().execute()})
     # delete our queue
-    queue.deleteQueue().exec()
+    queue.deleteQueue().execute()
     
     # No action
     queue.quit()

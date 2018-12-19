@@ -16,7 +16,7 @@ class ChangeMessageVisibilityCommand(BaseRSMQCommand):
               'id': {'required': True,
                      'value': None},
               'vt': {'required': False,
-                     'value': None},
+                     'value': None}
               }
 
     def exec_command(self):

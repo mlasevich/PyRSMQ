@@ -1,7 +1,11 @@
 """
 Note that bulk of the configuation is in the package.cfg file
 """
-import configparser
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser
+
 import os.path
 from pprint import pprint
 

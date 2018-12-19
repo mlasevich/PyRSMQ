@@ -36,7 +36,6 @@ class CreateQueueCommand(BaseRSMQCommand):
         tx.hsetnx(key, "created", now)
         tx.hsetnx(key, "modified", now)
         results = tx.execute()
-        self.log.debug("Results = %s", results)
         if True not in results:
             raise QueueAlreadyExists(self.get_qname)
         client.sadd(self.queue_set, self.get_qname)

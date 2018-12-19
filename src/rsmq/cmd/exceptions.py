@@ -10,7 +10,7 @@ class RedisSMQException(Exception):
         ''' Default constructor '''
         if msg is None:
             msg = self.__doc__
-        super().__init__(msg)
+        super(RedisSMQException, self).__init__(msg)
 
 
 class CommandNotImplementedException(RedisSMQException):
@@ -22,7 +22,8 @@ class InvalidParameterValue(RedisSMQException):
 
     def __init__(self, name, value):
         ''' Constructor '''
-        super().__init__("Value '%s' is not valid for parameter '%s'" % (value, name))
+        super(InvalidParameterValue, self).__init__(
+            "Value '%s' is not valid for parameter '%s'" % (value, name))
 
 
 class QueueAlreadyExists(RedisSMQException):
@@ -30,7 +31,8 @@ class QueueAlreadyExists(RedisSMQException):
 
     def __init__(self, name):
         ''' Constructor '''
-        super().__init__("Queue '%s' already exists" % name)
+        super(QueueAlreadyExists, self).__init__(
+            "Queue '%s' already exists" % name)
 
 
 class QueueDoesNotExist(RedisSMQException):
@@ -38,7 +40,8 @@ class QueueDoesNotExist(RedisSMQException):
 
     def __init__(self, name):
         ''' Constructor '''
-        super().__init__("Queue '%s' does not exist" % name)
+        super(QueueDoesNotExist, self).__init__(
+            "Queue '%s' does not exist" % name)
 
 
 class NoMessageInQueue(RedisSMQException):
@@ -46,4 +49,5 @@ class NoMessageInQueue(RedisSMQException):
 
     def __init__(self, name):
         ''' Constructor '''
-        super().__init__("Queue '%s' has no messages waiting" % name)
+        super(NoMessageInQueue, self).__init__(
+            "Queue '%s' has no messages waiting" % name)
