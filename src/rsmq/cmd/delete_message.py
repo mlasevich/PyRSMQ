@@ -29,7 +29,6 @@ class DeleteMessageCommand(BaseRSMQCommand):
                 message_id, "%s:fr" % message_id)
         result = tx.execute()
 
-        self.log.debug("Result: %s", result)
         if int(result[0]) == 1 and int(result[1]) > 0:
             return True
 

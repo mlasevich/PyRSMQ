@@ -26,7 +26,6 @@ class DeleteQueueCommand(BaseRSMQCommand):
         tx.delete(queue_name)
         tx.srem(self.queue_set, self.get_qname)
         results = tx.execute()
-        self.log.debug("Results = %s", results)
         if True not in results:
             raise QueueDoesNotExist(self.get_qname)
         self.log.debug("Deleted Queue %s", self.queue_base)

@@ -40,5 +40,4 @@ class CreateQueueCommand(BaseRSMQCommand):
         if True not in results:
             raise QueueAlreadyExists(self.get_qname)
         client.sadd(self.queue_set, self.get_qname)
-        self.log.debug("Created Queue %s", self.queue_base)
         return True

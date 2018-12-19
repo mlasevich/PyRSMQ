@@ -36,7 +36,6 @@ class SetQueueAttributesCommand(BaseRSMQCommand):
             tx.hset(queue_key, "modified", now)
         else:
             self.log.debug("No queue attribute changes")
-        result = tx.execute()
-        self.log.debug('Result: %s', result)
-        # Return get queue attributes
+        _result = tx.execute()
+
         return self.parent.getQueueAttributes().qname(self.get_qname).exec()

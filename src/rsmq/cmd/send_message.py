@@ -47,7 +47,6 @@ class SendMessageCommand(BaseRSMQCommand):
         tx.zadd(queue_base, {message_id: timestamp})
         tx.hset(queue_key, message_id, self.get_message)
         tx.hincrby(queue_key, "totalsent", 1)
-        results = tx.execute()
-        self.log.debug("Result: %s", results)
+        _results = tx.execute()
 
         return message_id
