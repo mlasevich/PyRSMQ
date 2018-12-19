@@ -13,9 +13,10 @@ cache: pip
 
 # command to install dependencies
 install:
-  - 'pip3 install pipenv'
+  - 'pip install --upgrade pip'
+  - 'pip install pipenv'
   - 'pipenv sync -d'
-  - 'pip3 install coveralls'
+  - 'pip install coveralls'
 
 script: 
   -  'pipenv run test'
