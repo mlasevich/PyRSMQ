@@ -5,7 +5,7 @@ Constant values
 # max length of queue name
 QNAME_MAX_LEN = 64
 
-QNAME_INVALID_CHARS_RE = r'[^a-z0-9._-]'
+QNAME_INVALID_CHARS_RE = r'[^A-Za-z0-9._-]'
 
 # Suffix to append to the queue
 QUEUE_SUFFUX = ":Q"

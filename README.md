@@ -8,11 +8,14 @@
 
 A lightweight message queue for Python that requires no dedicated queue server. Just a Redis server.
 
-Python implementation of [https://github.com/smrchy/rsmq](https://github.com/smrchy/rsmq)
+This is a Python implementation of [https://github.com/smrchy/rsmq](https://github.com/smrchy/rsmq))
 
 
 ## PyRSMQ Release Notes
 
+* 0.2.1
+  * Allow uppercase characters in queue names
+  
 * 0.2.0 - Adding Python 2 support
   * Some Python 2 support
   * Some Unit tests
