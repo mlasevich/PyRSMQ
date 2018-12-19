@@ -15,9 +15,8 @@ cache: pip
 
 # command to install dependencies
 install:
-  - 'pip install pipenv pytest-cov'
-  - 'pip install --upgrade setuptools'
-  - 'pipenv sync'
+  - 'pip install pipenv'
+  - 'pipenv sync -d'
 
 script: 
 #  - 'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov="src" .'
