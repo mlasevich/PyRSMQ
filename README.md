@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mlasevich/PyRSMQ.svg?branch=master)](https://travis-ci.org/mlasevich/PyRSMQ)
 [![Coverage Status](https://coveralls.io/repos/github/mlasevich/PyRSMQ/badge.svg?branch=master)](https://coveralls.io/github/mlasevich/PyRSMQ?branch=master)
+[![PyPI version](https://badge.fury.io/py/PyRSMQ.svg)](https://badge.fury.io/py/PyRSMQ)
 
 # Redis Simple Message Queue
 
