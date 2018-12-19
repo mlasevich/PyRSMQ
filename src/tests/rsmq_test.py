@@ -9,7 +9,7 @@ from unittest.util import _common_shorten_repr
 
 import fakeredis
 
-from .rsmq import RedisSMQ
+from rsmq.rsmq import RedisSMQ
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

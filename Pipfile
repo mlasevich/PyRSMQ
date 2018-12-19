@@ -11,6 +11,7 @@ fakeredis = "*"
 pytest-cov = "*"
 pylint = "*"
 mock = "*"
+twine = "*"
 
 [packages]
 redis = ">=3.0.0"

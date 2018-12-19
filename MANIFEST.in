@@ -1,0 +1,4 @@
+include package.cfg
+include requirements.txt
+recursive-include examples *.txt *.py
+prune examples/sample?/build
