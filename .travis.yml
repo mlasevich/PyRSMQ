@@ -1,4 +1,5 @@
 language: python
+
 python:
 #  - "2.6"
   - "2.7"
@@ -14,12 +15,12 @@ cache: pip
 
 # command to install dependencies
 install:
-  - 'pip install pipenv'
-  - 'pipenv sync -d'
+  - 'pip install -r requirements-tests.txt'
+  - 'pip install -r requirements.txt'
   - 'pip install coveralls'
 
 script: 
-  -  'pipenv run test'
+  -  'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
 
 after_success:
   - coveralls
