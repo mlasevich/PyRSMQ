@@ -29,7 +29,7 @@ deploy:
   provider: pypi
   user: mlasevich
   password:
-    secure: $PYPI_SECRET_TOKEN
+    secure: "a8sG1opQRUIKysqryuj0TbzPqSS5SqobUhEX3E/31LJiBYWAhfsVajdpaGYUfhxug926lIGxrhkPRbBKRmwD3PesITv4Seddjw9Q6GYYFtqvuam3zYCgsE5091gg+MLgnAwAbfUulIla9yBPOqVNIFTlc0PJm8d/GLfPjtByo1DhCbx2/EeCFXfsquGxibNeCk1V4qn50o+j6n61ApGvNkWV9XWWa0ASam8PK9VZ7fiymH3TEObz1IV3FKFyXoQoNGWlqud8HZy6nNabC9Q1wL7QkJOIiTcb/6ywXwS2BNxRTWQefflhn4kRLXTE+mpChrGNynPgjoPpRtPxPgwN71PIdFTo3nx3xKzqLxHTH5ILD1YrxNXWNXHp3Bfa+B7RPDRtXQFT/27eWoubfnuXutfdfXJjRvrwErhVtmh7PmF0/mtVFlJ5N9y+YiulJQK4So3AXwY3P+jETytxBW280HTZrLXN4oiZ9hvitCHM/UISbdghEuOciyetpbo8cFY++3gXGdOEVLJEjPtDJFxuOjKMqRMGV+oK4X/neP+BTY2FgbUu3SVzwCOviVabQ8WweqM2lETT638s4NEHFkxQ3nF4gCdFPj52Duokf2czdH/XRsMQgyBneuNL8Tcg6CyXhw9ElRHI8DVemBTh19qDH+XsoTGAI5TBfYx4ACp8HRg="
   skip_existing: true
   distributions: "sdist bdist_wheel"
   on:
