@@ -1,0 +1,14 @@
+[run]
+branch = true
+omit = */test_*.py,*/*_test.py
+data_file = .coverage
+
+[report]
+
+
+[html]
+directory = ./reports/coverage
+
+[xml]
+output = ./reports/coverage.xml
+

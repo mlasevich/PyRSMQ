@@ -30,4 +30,4 @@ class DeleteQueueCommand(BaseRSMQCommand):
         if True not in results:
             raise QueueDoesNotExist(self.get_qname)
         self.log.debug("Deleted Queue %s", self.queue_base)
-        return False
+        return True
