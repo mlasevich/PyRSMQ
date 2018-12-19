@@ -25,19 +25,18 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
         queue_key = self.queue_key
 
         tx = self.client.pipeline(transaction=True)
-        tx.hmget(queue_key, "vt", "delay", "maxsize",
-                 "totalrecv", "totalsent", "created", "modified")
+        tx.hmget(queue_key, "vt", "delay", "maxsize", "totalrecv", "totalsent", "created",
+                 "modified")
         tx.zcard(queue_base)
         tx.zcount(queue_base, "%s000" % now, "+inf")
 
         results = tx.execute()
 
-        self.log.debug("Results: %s", results)
-
         if not results or results[0][0] is None:
             raise QueueDoesNotExist(self.get_qname)
 
         stats = results[0]
+
         return {
             "vt": stats[0],
             "delay": stats[1],

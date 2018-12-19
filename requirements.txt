@@ -1,2 +1,2 @@
 # Requirements
-redis>=3.0.1
+redis

@@ -5,7 +5,7 @@ import difflib
 import os.path
 import pprint
 import unittest
-from unittest.util import _common_shorten_repr
+from unittest.util import safe_repr
 
 import fakeredis
 
@@ -32,8 +32,8 @@ class TestUnitTests(unittest.TestCase):
             diff = ('\n' + '\n'.join(difflib.ndiff(
                            pprint.pformat(expected).splitlines(),
                            pprint.pformat(actual_short).splitlines())))
-            standardMsg = '%s !<= %s' % _common_shorten_repr(
-                expected, actual_short)
+            standardMsg = '%s !<= %s' % (
+                safe_repr(expected), safe_repr(actual_short))
             standardMsg = self._truncateMessage(standardMsg, diff)
             msg = self._formatMessage(msg, standardMsg)
             raise AssertionError(msg)
@@ -52,7 +52,7 @@ class TestUnitTests(unittest.TestCase):
         queue_key = 'rsmq:%s:Q' % queue_name
         queue.createQueue().qname(queue_name).execute()
         keys = client.keys('*')
-        self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
+        self.assertListEqual(sorted([queue_key, 'rsmq:QUEUES']), sorted(keys))
         queues = client.smembers('rsmq:QUEUES')
         self.assertSetEqual(set([queue_name]), queues)
         queue_details = client.hgetall(queue_key)
@@ -68,7 +68,7 @@ class TestUnitTests(unittest.TestCase):
         queue_key = 'rsmq:%s:Q' % queue_name
         queue.createQueue(qname=queue_name, vt=15).delay(10).execute()
         keys = client.keys('*')
-        self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
+        self.assertListEqual(sorted([queue_key, 'rsmq:QUEUES']), sorted(keys))
         queues = client.smembers('rsmq:QUEUES')
         self.assertSetEqual(set([queue_name]), queues)
         queue_details = client.hgetall(queue_key)
@@ -85,7 +85,7 @@ class TestUnitTests(unittest.TestCase):
         queue_key = 'rsmq:%s:Q' % queue_name
         queue.createQueue().qname(queue_name).execute()
         keys = client.keys('*')
-        self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
+        self.assertListEqual(sorted([queue_key, 'rsmq:QUEUES']), sorted(keys))
         queues = client.smembers('rsmq:QUEUES')
         self.assertSetEqual(set([queue_name]), queues)
         queue_details = client.hgetall(queue_key)
@@ -105,7 +105,7 @@ class TestUnitTests(unittest.TestCase):
         queue_key = 'rsmq:%s:Q' % queue_name
         queue.createQueue(vt=15, delay=10).execute()
         keys = client.keys('*')
-        self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
+        self.assertListEqual(sorted([queue_key, 'rsmq:QUEUES']), sorted(keys))
         queues = client.smembers('rsmq:QUEUES')
         self.assertSetEqual(set([queue_name]), queues)
         queue_details = client.hgetall(queue_key)
@@ -140,7 +140,7 @@ class TestUnitTests(unittest.TestCase):
         queue_key = 'rsmq:%s:Q' % queue_name
         queue.createQueue(vt=15, delay=10).execute()
         keys = client.keys('*')
-        self.assertListEqual([queue_key, 'rsmq:QUEUES'], keys)
+        self.assertListEqual(sorted([queue_key, 'rsmq:QUEUES']), sorted(keys))
         queues = client.smembers('rsmq:QUEUES')
         self.assertSetEqual(set([queue_name]), queues)
         queue_details = client.hgetall(queue_key)
