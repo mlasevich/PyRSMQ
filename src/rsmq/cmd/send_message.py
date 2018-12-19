@@ -22,15 +22,13 @@ class SendMessageCommand(BaseRSMQCommand):
               }
 
     def _make_message_id(self):
-        ''' generate a uid for message '''
-        # 22 random characters
-        # return random.getrandbits(64)
+        ''' generate a message id for message '''
         return uuid.uuid4().hex
 
     def exec_command(self):
         ''' Execute '''
         queue = self.queue_def()
-        uid = self._make_message_id()
+        message_id = self._make_message_id()
 
         queue_key = self.queue_key
         queue_base = self.queue_base
@@ -44,11 +42,12 @@ class SendMessageCommand(BaseRSMQCommand):
 
         tx = self.client.pipeline(transaction=True)
         timestamp = ts + delay * 1000
-        self.log.debug("tx.zadd(%s, %s, %s)", queue_base, timestamp, uid)
-        tx.zadd(queue_base, {uid: timestamp})
-        tx.hset(queue_key, uid, self.get_message)
+        self.log.debug("tx.zadd(%s, %s, %s)",
+                       queue_base, timestamp, message_id)
+        tx.zadd(queue_base, {message_id: timestamp})
+        tx.hset(queue_key, message_id, self.get_message)
         tx.hincrby(queue_key, "totalsent", 1)
         results = tx.execute()
         self.log.debug("Result: %s", results)
 
-        return uid
+        return message_id

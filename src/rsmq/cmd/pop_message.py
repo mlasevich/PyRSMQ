@@ -26,5 +26,5 @@ class PopMessageCommand(BaseRSMQCommand):
         result = client.evalsha(self.popMessageSha1, 2, queue_base, ts)
         if not result:
             raise NoMessageInQueue(self.get_qname)
-        [uid, message, rc, ts] = result
-        return {'uid': uid, 'message': message, 'rc': rc, 'ts': ts}
+        [message_id, message, rc, ts] = result
+        return {'id': message_id, 'message': message, 'rc': rc, 'ts': ts}

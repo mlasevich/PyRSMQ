@@ -255,7 +255,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
         * `qname` - (Required) name of the queue
         * `vt` - Optional override for visibility timeout for this message (If not specified, default for queue is used)
     * **Returns** dictionary for following fields:
-        * `uid` - message id
+        * `id` - message id
         * `message` - message content
         * `rc` - receive count - how many times this message was received
         * `ts` - unix timestamp of when the message was originally sent
@@ -264,7 +264,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
     * **Parameters:**
         * `qname` - (Required) name of the queue
     * **Returns** dictionary for following fields:
-        * `uid` - message id
+        * `id` - message id
         * `message` - message content
         * `rc` - receive count - how many times this message was received
         * `ts` - unix timestamp of when the message was originally sent

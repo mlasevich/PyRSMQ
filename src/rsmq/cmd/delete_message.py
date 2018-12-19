@@ -21,11 +21,12 @@ class DeleteMessageCommand(BaseRSMQCommand):
         client = self.client
         queue_base = self.queue_base
         queue_key = self.queue_key
-        uid = self.get_id
+        message_id = self.get_id
 
         tx = client.pipeline(transaction=True)
-        tx.zrem(queue_base, uid)
-        tx.hdel(queue_key, uid, "%s:rc" % uid, "%s:fr" % uid)
+        tx.zrem(queue_base, message_id)
+        tx.hdel(queue_key, message_id, "%s:rc" %
+                message_id, "%s:fr" % message_id)
         result = tx.execute()
 
         self.log.debug("Result: %s", result)

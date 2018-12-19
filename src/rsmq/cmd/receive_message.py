@@ -31,5 +31,5 @@ class ReceiveMessageCommand(BaseRSMQCommand):
             self.receiveMessageSha1, 3, queue_base, ts, vtimeout)
         if not result:
             raise NoMessageInQueue(self.get_qname)
-        [uid, message, rc, ts] = result
-        return {'uid': uid, 'message': message, 'rc': rc, 'ts': ts}
+        [message_id, message, rc, ts] = result
+        return {'id': message_id, 'message': message, 'rc': rc, 'ts': ts}
