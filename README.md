@@ -7,13 +7,13 @@
 
 A lightweight message queue for Python that requires no dedicated queue server. Just a Redis server.
 
-Python implementation of https://github.com/smrchy/rsmq.
+Python implementation of [https://github.com/smrchy/rsmq](https://github.com/smrchy/rsmq)
 
 
 ## PyRSMQ Release Notes
 
 * 0.2.0 - Adding Python 2 support
-  * Python 2 support
+  * Some Python 2 support
   * Some Unit tests
   * Change `.exec()` to `.execute()` for P2 compatibility
 
@@ -59,6 +59,9 @@ the queue. This can remove the need for _Consumer_ to constantly poll the queue 
 (*NOTE:* as of this writing, "Realtime" is not yet implemented in python version)
 
 ## Python Implementation Notes
+
+*NOTE* This project is written for Python 3.x. While some attempts to get Python2 support were made
+I am not sure how stable it would be under Python 2
 
 This version is heavily based on Java version (https://github.com/igr/jrsmq), which in turn is
 based on the original Node.JS version.
@@ -114,10 +117,10 @@ exists, and then send a message with a 2 second delay. We will then demonstrate 
 message before delay expires and getting the message after timeout
 
 
-from pprint import pprint
-import time
+    from pprint import pprint
+    import time
 
-from rsmq.rsmq import RedisSMQ
+    from rsmq.rsmq import RedisSMQ
 
 
     # Create controller.
