@@ -17,7 +17,11 @@ cache: pip
 install:
   - 'pip install pipenv'
   - 'pipenv sync -d'
+  - 'pip install coveralls'
 
 script: 
-#  - 'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov="src" .'
   -  'pipenv run test'
+
+after_success:
+  - coverage report
+  - coveralls

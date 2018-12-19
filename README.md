@@ -1,6 +1,7 @@
 ![RSMQ: Redis Simple Message Queue for Node.js](https://img.webmart.de/rsmq_wide.png)
 
 [![Build Status](https://travis-ci.org/mlasevich/PyRSMQ.svg?branch=master)](https://travis-ci.org/mlasevich/PyRSMQ)
+[![Coverage Status](https://coveralls.io/repos/github/mlasevich/PyRSMQ/badge.svg?branch=master)](https://coveralls.io/github/mlasevich/PyRSMQ?branch=master)
 
 # Redis Simple Message Queue
 

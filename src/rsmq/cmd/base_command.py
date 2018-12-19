@@ -167,6 +167,11 @@ class BaseRSMQCommand():
         ''' Validate delay  parameter '''
         return validate_int(delay, const.DELAY_MIN, const.DELAY_MAX, logger=self.log, name="delay")
 
+    def _validate_maxsize(self, maxsize):
+        ''' Validate maxsize parameter '''
+        return maxsize == -1 or validate_int(maxsize, const.MAXSIZE_MIN, const.MAXSIZE_MAX,
+                                             logger=self.log, name="maxsize")
+
     def _set_param(self, name, value):
         ''' set parameter, with validation '''
         if name in self.PARAMS:
