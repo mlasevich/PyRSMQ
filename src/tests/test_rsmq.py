@@ -43,6 +43,28 @@ class TestUnitTests(unittest.TestCase):
         unittest_loaded = True
         self.assertTrue(unittest_loaded)
 
+    def test_qname_good_validation(self):
+        ''' Test Good QName validation '''
+        client = fakeredis.FakeStrictRedis(decode_responses=True)
+        client.flushall()
+        queue = RedisSMQ(client=client, exceptions=False)
+        GOOD_QUEUE_NAMES = ['simple', 'with_underscore', 'with-dash', '-start',
+                            'with\x01\x02\x03binary']
+
+        for qname in GOOD_QUEUE_NAMES:
+            self.assertTrue(queue.getQueueAttributes().qname(qname).ready())
+
+    def test_qname_bad_validation(self):
+        ''' Test bad QName validation '''
+        client = fakeredis.FakeStrictRedis(decode_responses=True)
+        client.flushall()
+        queue = RedisSMQ(client=client, exceptions=False)
+        BAD_QUEUE_NAMES = ['', None, 'something:else',
+                           ':', 'something:', ':else']
+
+        for qname in BAD_QUEUE_NAMES:
+            self.assertFalse(queue.getQueueAttributes().qname(qname).ready())
+
     def test_create_queue_default(self):
         ''' Test Creating of the Queue '''
         client = fakeredis.FakeStrictRedis(decode_responses=True)
