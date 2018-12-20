@@ -26,7 +26,7 @@ class SendMessageCommand(BaseRSMQCommand):
         @raise QueueDoesNotExist if queue does not exist
         '''
         queue = self.queue_def()
-        message_id = make_message_id(queue.get('ts', None))
+        message_id = make_message_id(queue.get('ts_usec', None))
 
         queue_key = self.queue_key
         queue_base = self.queue_base

@@ -61,17 +61,6 @@ def random_string(length, charset=None):
     return string
 
 
-def make_message_id(secs, msecs=0):
-    ''' Create a message id based on redis time '''
-    message_id = baseXencode("%010d%06d" % (secs, msecs))
-    return message_id + random_string(22)
-
-
-if __name__ == "__main__":
-    import time
-    now = time.time()
-    seconds = int(now)
-    ms = int((now - seconds) * 1000000)
-    print("TS: %s :: %s" % (now, make_message_id(seconds, ms)))
-    import uuid
-    print("UUID: %s" % uuid.uuid4().hex)
+def make_message_id(usec):
+    ''' Create a message id based on Redis time '''
+    return baseXencode(usec) + random_string(22)

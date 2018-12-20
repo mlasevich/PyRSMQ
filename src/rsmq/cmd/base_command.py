@@ -227,12 +227,14 @@ class BaseRSMQCommand():
         stats = results[0]
         redisTime = results[1]
 
-        ts = redisTime[0] * 1000 + int(redisTime[1] / 1000)
+        ts_usec = redisTime[0] * 1000000 + redisTime[1]
+        ts = int(ts_usec / 1000)
 
         return {
             'qname': self.get_qname,
             "vt": stats[0],
             "delay": stats[1],
             "maxsize": stats[2],
-            'ts': ts
+            'ts': ts,
+            'ts_usec': ts_usec
         }
