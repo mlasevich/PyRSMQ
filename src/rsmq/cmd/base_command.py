@@ -120,8 +120,11 @@ class BaseRSMQCommand():
             def setter(value):
                 if self._validate_param(name, value):
                     self._params[name] = value
-                    return self
-                raise InvalidParameterValue(name, value)
+                elif self._exceptions:
+                    raise InvalidParameterValue(name, value)
+                else:
+                    self.log.info("Invalid value for '%s': '%s'", name, value)
+                return self
             return setter
         elif name.startswith('get_'):
             param = name[4:]
@@ -155,7 +158,8 @@ class BaseRSMQCommand():
         if len(qname) > const.QNAME_MAX_LEN:
             return False
         # check if we have invalid characters
-        if bool(QNAME_INVALID_RE.search(qname)):
+        if ':' in qname:
+            print('Detected :')
             return False
         return True
 
