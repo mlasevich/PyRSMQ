@@ -14,7 +14,8 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 ## PyRSMQ Release Notes
 
 * 0.3.0 
-  * Make message id generation match RSMQ algorithm 
+  * Make message id generation match RSMQ algorithm
+  * Allow any character in queue name other than `:` 
 
 * 0.2.1
   * Allow uppercase characters in queue names
