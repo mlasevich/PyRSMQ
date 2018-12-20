@@ -2,10 +2,8 @@
 
 '''
 
-#import random
-import uuid
-
 from .base_command import BaseRSMQCommand
+from .utils import make_message_id
 
 
 class SendMessageCommand(BaseRSMQCommand):
@@ -21,14 +19,14 @@ class SendMessageCommand(BaseRSMQCommand):
                         'value': None}
               }
 
-    def _make_message_id(self):
-        ''' generate a message id for message '''
-        return uuid.uuid4().hex
-
     def exec_command(self):
-        ''' Execute '''
+        ''' 
+        Execute command
+
+        @raise QueueDoesNotExist if queue does not exist
+        '''
         queue = self.queue_def()
-        message_id = self._make_message_id()
+        message_id = make_message_id(queue.get('ts', None))
 
         queue_key = self.queue_key
         queue_base = self.queue_base
