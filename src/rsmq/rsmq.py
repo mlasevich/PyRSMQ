@@ -60,10 +60,15 @@ class RedisSMQ():
 
         # RSMQ global options
         self.options = dict(DEFAULT_OPTIONS)
+        to_remove = []
         for param in kwargs.keys():
             if param in self.options:
                 self.options[param] = kwargs[param]
-                del kwargs[param]
+                to_remove.append(param)
+
+        # Remove unnecessary kwargs
+        for param in to_remove:
+            del kwargs[param]
 
         # Everything else is passed through to commands
         self._default_params = kwargs
