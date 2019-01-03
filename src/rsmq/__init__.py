@@ -9,3 +9,5 @@ Based on:
   * Java port: https://github.com/igr/jrsmq
 
 '''
+
+from .rsmq import RedisSMQ
