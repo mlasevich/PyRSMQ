@@ -12,7 +12,8 @@ class ListQueuesCommand(BaseRSMQCommand):
     On execution returns a set of queues already existing on the redis in this namespace
     '''
 
-    PARAMS = {}
+    PARAMS = {'quiet': {'required': False,
+                        'value': False}}
 
     def exec_command(self):
         ''' Exec Command '''

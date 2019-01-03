@@ -16,7 +16,9 @@ class SendMessageCommand(BaseRSMQCommand):
               'message': {'required': True,
                           'value': None},
               'delay': {'required': False,
-                        'value': None}
+                        'value': None},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def exec_command(self):

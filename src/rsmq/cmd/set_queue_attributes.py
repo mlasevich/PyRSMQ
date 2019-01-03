@@ -18,6 +18,8 @@ class SetQueueAttributesCommand(BaseRSMQCommand):
                         'value': None},
               'maxsize': {'required': False,
                           'value': None},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def exec_command(self):

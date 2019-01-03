@@ -15,6 +15,8 @@ class ReceiveMessageCommand(BaseRSMQCommand):
                         'value': None},
               'vt': {'required': False,
                      'value': None},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def exec_command(self):

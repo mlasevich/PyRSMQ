@@ -12,7 +12,9 @@ class PopMessageCommand(BaseRSMQCommand):
     '''
 
     PARAMS = {'qname': {'required': True,
-                        'value': None}
+                        'value': None},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def exec_command(self):

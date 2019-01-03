@@ -20,7 +20,9 @@ class CreateQueueCommand(BaseRSMQCommand):
               'delay': {'required': True,
                         'value': const.DELAY_DEFAULT},
               'maxsize': {'required': True,
-                          'value': const.MAXSIZE_DEFAULT}
+                          'value': const.MAXSIZE_DEFAULT},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def exec_command(self):

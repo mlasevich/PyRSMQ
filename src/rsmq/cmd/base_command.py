@@ -21,7 +21,9 @@ class BaseRSMQCommand():
     ''' Base for all RQMS commands '''
 
     PARAMS = {'qname': {'required': True,
-                        'value': None}
+                        'value': None},
+              'quiet': {'required': False,
+                        'value': False}
               }
 
     def __init__(self, rsmq, **kwargs):
@@ -122,7 +124,7 @@ class BaseRSMQCommand():
                     self._params[name] = value
                 elif self._exceptions:
                     raise InvalidParameterValue(name, value)
-                else:
+                elif self.quiet is not True:
                     self.log.info("Invalid value for '%s': '%s'", name, value)
                 return self
             return setter
