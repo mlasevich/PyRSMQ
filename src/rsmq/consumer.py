@@ -203,3 +203,12 @@ class RedisSMQConsumer():
                             self.qname, ex)
         self._request_stop = None
         self.trace("Ended Queue Consumer for %s", self.qname)
+
+
+class RedisSMQConsumerThread(RedisSMQConsumer, Thread):
+    ''' Version of a RedisSMQConsumer implemented as a self-contained thread '''
+
+    def __init__(self, qname, processor, **rsmq_params):
+        ''' Constructor '''
+        RedisSMQConsumer.__init__(self, qname, processor, **rsmq_params)
+        Thread.__init__(self, name="RedisSMQConsumer:%s" % qname, daemon=True)

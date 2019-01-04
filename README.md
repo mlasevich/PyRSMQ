@@ -14,12 +14,12 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 ## PyRSMQ Release Notes
 
 * 0.4.0
-  * Add ability to import `RedisSMQ` from package rather than from the module (i.e. you can now use `from rsmq import RedisSMQ` instead of `from rsmq.rsmq import RedisSMQ`)
+  * Ability to import `RedisSMQ` from package rather than from the module (i.e. you can now use `from rsmq import RedisSMQ` instead of `from rsmq.rsmq import RedisSMQ`)
   * Add quiet option to most commands to allow to hide errors if exceptions are disabled
   * Additional unit tests
-  * Add auto-encoding of non-string messages to JSON for sendMessage
-  * Add `RedisSMQConsumer` for easier creation of queue consumers
-  * Add examples for simple producer/consumer
+  * Auto-encoding of non-string messages to JSON for sendMessage
+  * Add `RedisSMQConsumer` and `RedisSMQConsumerThread` for easier creation of queue consumers
+  * Add examples for simple producers/consumers
   
 * 0.3.1
   * Fix message id generation match RSMQ algorithm
@@ -107,14 +107,15 @@ the controller and not need to specify it in every command.
 ### A "Consumer" Service Utility
 
 In addition to all the APIs in the original RSMQ project, a simple to use consumer implementation
-is included in this project as a `RedisSMQConsumer` class.
+is included in this project as `RedisSMQConsumer` and `RedisSMQConsumerThread` classes.
 
-The consumer instance wraps an RSMQ Controller and is configured with a processor method which is
-called every time a new message is received. The processor method returns true or false to indicate
-if message was successfully received and the message is deleted or returned to the queue based on
-that. The consumer auto-extends the visibility timeout as long as the processor is running, reducing
-the concern that item will become visible again if processing takes too long and visibility timeout
-elapses.
+#### RedisSMQConsumer
+The `RedisSMQConsumer` instance wraps an RSMQ Controller and is configured with a processor method
+which is called every time a new message is received. The processor method returns true or false 
+to indicate if message was successfully received and the message is deleted or returned to the
+queue based on that. The consumer auto-extends the visibility timeout as long as the processor is
+running, reducing the concern that item will become visible again if processing takes too long and
+visibility timeout elapses.
 
 NOTE: Since currently the `realtime` functionality is not implemented, Consumer implementation is
 currently using polling to check for queue items. 
@@ -137,8 +138,45 @@ consumer = RedisSMQConsumer('my-queue', processor, host='127.0.0.1')
 consumer.run()
 ```
 
-For more complete example, see examples directory.
+For a more complete example, see examples directory.
 
+
+#### RedisSMQConsumerThread
+
+`RedisSMQConsumerThread` is simply a version of `RedisSMQConsumer` that extends Thread class.
+
+Once created you can start it like any other thread, or stop it using `stop(wait)` method, where
+wait specifies maximum time to wait for the thread to stop before returning (the thread would still
+be trying to stop if the `wait` time expires)
+
+Note that the thread is by default set to be a `daemon` thread, so on exit of your main thread it
+will be stopped. If you wish to disable daemon flag, just disable it before starting the thread as
+with any other thread
+
+Example usage:
+
+```
+from rsmq.consumer import RedisSMQConsumerThread
+
+# define Processor
+def processor(id, message, rc, ts):
+  ''' process the message '''
+  # Do something
+  return True
+
+# create consumer
+consumer = RedisSMQConsumerThread('my-queue', processor, host='127.0.0.1')
+
+# start consumer
+consumer.start()
+
+# do what else you need to, then stop the consumer
+# (waiting for 10 seconds for it to stop):
+consumer.stop(10)
+
+```
+
+For a more complete example, see examples directory.
 
 ### General Usage Approach
 
