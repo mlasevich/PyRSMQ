@@ -124,7 +124,7 @@ class BaseRSMQCommand():
                     self._params[name] = value
                 elif self._exceptions:
                     raise InvalidParameterValue(name, value)
-                elif self.quiet is not True:
+                elif self.get_quiet is not True:
                     self.log.info("Invalid value for '%s': '%s'", name, value)
                 return self
             return setter
@@ -201,8 +201,9 @@ class BaseRSMQCommand():
         try:
             ret = self._exec()
         except RedisSMQException as ex:
-            self.log.warning("%s: Exception while processing %s: %s", ex.__class__.__name__,
-                             self.__class__.__name__, ex)
+            if self.get_quiet is not True:
+                self.log.warning("%s: Exception while processing %s: %s", ex.__class__.__name__,
+                                 self.__class__.__name__, ex)
             return False
         return ret
 
