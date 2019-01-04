@@ -104,6 +104,42 @@ defaults for all commands created via this controller - so, for example, you if 
 with only one queue using this controller, you can specify the qname parameter during creation of
 the controller and not need to specify it in every command.
 
+### A "Consumer" Service Utility
+
+In addition to all the APIs in the original RSMQ project, a simple to use consumer implementation
+is included in this project as a `RedisSMQConsumer` class.
+
+The consumer instance wraps an RSMQ Controller and is configured with a processor method which is
+called every time a new message is received. The processor method returns true or false to indicate
+if message was successfully received and the message is deleted or returned to the queue based on
+that. The consumer auto-extends the visibility timeout as long as the processor is running, reducing
+the concern that item will become visible again if processing takes too long and visibility timeout
+elapses.
+
+NOTE: Since currently the `realtime` functionality is not implemented, Consumer implementation is
+currently using polling to check for queue items. 
+
+Example usage:
+
+```
+from rsmq.consumer import RedisSMQConsumer
+
+# define Processor
+def processor(id, message, rc, ts):
+  ''' process the message '''
+  # Do something
+  return True
+
+# create consumer
+consumer = RedisSMQConsumer('my-queue', processor, host='127.0.0.1')
+
+# run consumer
+consumer.run()
+```
+
+For more complete example, see examples directory.
+
+
 ### General Usage Approach
 
 As copied from other versions, the general approach is to create a controller object and use that
@@ -211,7 +247,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
 
 #### Controller Methods
 
-* `exceptions(True/False` - enable/disable exceptions
+* `exceptions(True/False)` - enable/disable exceptions
 * `setClient(client)` - specify new redis client object
 * `ns(namespace)` - set new namespace
 * `quit()` - disconnect from redis. This is mainly for compatibility with other versions. Does not do much
