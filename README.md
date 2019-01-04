@@ -13,6 +13,14 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 ## PyRSMQ Release Notes
 
+* 0.4.0
+  * Add ability to import `RedisSMQ` from package rather than from the module (i.e. you can now use `from rsmq import RedisSMQ` instead of `from rsmq.rsmq import RedisSMQ`)
+  * Add quiet option to most commands to allow to hide errors if exceptions are disabled
+  * Additional unit tests
+  * Add auto-encoding of non-string messages to JSON for sendMessage
+  * Add `RedisSMQConsumer` for easier creation of queue consumers
+  * Add examples for simple producer/consumer
+  
 * 0.3.1
   * Fix message id generation match RSMQ algorithm
 
@@ -131,7 +139,7 @@ message before delay expires and getting the message after timeout
     from pprint import pprint
     import time
 
-    from rsmq.rsmq import RedisSMQ
+    from rsmq import RedisSMQ
 
 
     # Create controller.
@@ -216,12 +224,14 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
         * `vt` - default visibility timeout in seconds. Default: `30`
         * `delay` - default delay (visibility timeout on insert). Default: `0`
         * `maxsize` - maximum message size (1024-65535, Default: 65535)
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns**:
         * `True` if queue was created
 
 * `deleteQueue()` - Delete Existing queue
    * Parameters:
         * `qname` - (Required) name of the queue
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns**:
         * `True` if queue was deleted
 
@@ -231,12 +241,14 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
         * `vt` - default visibility timeout in seconds. Default: `30`
         * `delay` - default delay (visibility timeout on insert). Default: `0`
         * `maxsize` - maximum message size (1024-65535, Default: 65535)
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns**:
         * output of `getQueueAttributes()` call
 
 * `getQueueAttributes()` - Get Queue Attributes and statistics
    * Parameters:
         * `qname` - (Required) name of the queue
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns** a dictionary with following fields:
         * `vt` -  default visibility timeout
         * `delay` - default insertion delay
@@ -257,6 +269,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
     * **Parameters:**
         * `qname` - (Required) name of the queue
         * `id` - (Required) message id
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
         * ???
     * **Returns**:
         * ???
@@ -266,6 +279,8 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
         * `qname` - (Required) name of the queue
         * `message` - (Required) message id
         * `delay` - Optional override of the `delay` for this message (If not specified, default for queue is used)
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
+        * `encode` if set to `True`, force encode message as JSON string. If False, try to auto-detect if message needs to be encoded
     * **Returns**:
         * message id of the sent message
 
@@ -273,6 +288,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
     * **Parameters:**
         * `qname` - (Required) name of the queue
         * `vt` - Optional override for visibility timeout for this message (If not specified, default for queue is used)
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns** dictionary for following fields:
         * `id` - message id
         * `message` - message content
@@ -282,6 +298,7 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
 * `popMessage()` -  Receive Message from queue and delete it from queue
     * **Parameters:**
         * `qname` - (Required) name of the queue
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns** dictionary for following fields:
         * `id` - message id
         * `message` - message content
@@ -292,5 +309,6 @@ Usage: `rsmq.rqsm.RedisSMQ([options])`
     * **Parameters:**
         * `qname` - (Required) name of the queue
         * `id` - (Required) message id
+        * `quiet` - if set to `True` and exceptions are disabled, do not produce error log entries
     * **Returns**:
         * `True` if message was deleted
