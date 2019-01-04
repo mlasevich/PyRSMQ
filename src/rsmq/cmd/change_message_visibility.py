@@ -35,5 +35,4 @@ class ChangeMessageVisibilityCommand(BaseRSMQCommand):
             self.changeMessageVisibilitySha1, 3, queue_base, self.get_id, vtimeout)
         if not result:
             raise NoMessageInQueue(self.get_qname)
-        [message_id, message, rc, ts] = result
-        return {'id': message_id, 'message': message, 'rc': rc, 'ts': ts}
+        return result == 1
