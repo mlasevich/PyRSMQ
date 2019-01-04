@@ -3,7 +3,7 @@
 '''
 
 from .base_command import BaseRSMQCommand
-from .utils import make_message_id
+from .utils import make_message_id, encode_message
 
 
 class SendMessageCommand(BaseRSMQCommand):
@@ -18,7 +18,9 @@ class SendMessageCommand(BaseRSMQCommand):
               'delay': {'required': False,
                         'value': None},
               'quiet': {'required': False,
-                        'value': False}
+                        'value': False},
+              'encode': {'required': False,
+                         'value': False}
               }
 
     def exec_command(self):
@@ -40,12 +42,18 @@ class SendMessageCommand(BaseRSMQCommand):
             delay = queue.get('delay', 0)
         delay = int(delay or 0)
 
+        message = self.get_message
+        if self.get_encode or not isinstance(message, str):
+            message = encode_message(message)
+            self.log.debug("Encoded message: %s", message)
+
         tx = self.client.pipeline(transaction=True)
         timestamp = ts + delay * 1000
         self.log.debug("tx.zadd(%s, %s, %s)",
                        queue_base, timestamp, message_id)
         tx.zadd(queue_base, {message_id: timestamp})
-        tx.hset(queue_key, message_id, self.get_message)
+
+        tx.hset(queue_key, message_id, message)
         tx.hincrby(queue_key, "totalsent", 1)
         _results = tx.execute()
 
