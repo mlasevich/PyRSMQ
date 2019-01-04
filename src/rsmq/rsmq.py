@@ -61,9 +61,12 @@ class RedisSMQ():
         # RSMQ global options
         self.options = dict(DEFAULT_OPTIONS)
         to_remove = []
-        for param in kwargs.keys():
+        for param, value in kwargs.items():
             if param in self.options:
                 self.options[param] = kwargs[param]
+                to_remove.append(param)
+            elif value is None:
+                # Remove default set to None
                 to_remove.append(param)
 
         # Remove unnecessary kwargs
