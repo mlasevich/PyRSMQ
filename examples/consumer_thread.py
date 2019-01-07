@@ -39,8 +39,8 @@ class Processor(object):
 
     def process(self, id, message, rc, ts):
         ''' Actual method that processes the message '''
-        LOG.info("Got message: id: %s, retry count: %s, ts: %s, msg: %s" %
-                 (id, rc, ts, message))
+        LOG.info("Got message: id: %s, retry count: %s, ts: %s, msg: %s (%s)" %
+                 (id, rc, ts, message, type(message)))
         result = self.random_result()
         delay = self.delay
         if delay > 0:
@@ -106,6 +106,9 @@ def main(argv=None):
     parser.add_argument("--no-trace", dest="trace", action="store_false", default=True,
                         help="If set, hide trace messages")
 
+    parser.add_argument("-D", "--decode", dest="decode", action="store_true", default=False,
+                        help="If set, decode messages from JSON")
+
     parser.add_argument("-H", dest="host", default="127.0.0.1",
                         help="Redis Host [default: %(default)s]")
     parser.add_argument("-P", dest="port", type=int, default=6379,
@@ -124,7 +127,7 @@ def main(argv=None):
                                            processor=processor.process,
                                            host=args.host, port=args.port, ns=args.ns, vt=args.vt,
                                            empty_queue_delay=args.empty_queue_delay,
-                                           trace=args.trace)
+                                           decode=args.decode, trace=args.trace)
 
     # Start Consumption
     consume(rsqm_consumer, "%s:%s" % (args.ns, args.queue), args.exit_after)

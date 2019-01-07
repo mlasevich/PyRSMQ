@@ -9,6 +9,7 @@ import time
 
 from rsmq.cmd.exceptions import NoMessageInQueue
 
+from .cmd import utils
 from .cmd.exceptions import RedisSMQException
 from .rsmq import RedisSMQ
 from .rsmq import const
@@ -22,7 +23,9 @@ class RedisSMQConsumer():
     RSMQ Consumer Worker
     '''
     # local parameters and their value
-    LOCAL_PARAMS = {'retry_delay': 0, 'empty_queue_delay': 2.0}
+    LOCAL_PARAMS = {'retry_delay': 0,
+                    'empty_queue_delay': 2.0,
+                    'decode': True}
 
     class VisibilityTimeoutExtender(Thread):
         ''' Thread that keeps the visibility '''
@@ -127,6 +130,11 @@ class RedisSMQConsumer():
         ''' empty_queue_delay '''
         return self._param('empty_queue_delay')
 
+    @property
+    def decode(self):
+        ''' decode, if true, attempt to decode the output from JSON '''
+        return self._param('decode')
+
     def _get_vt(self):
         ''' Get VT from the queue info if not set '''
         if self.vt is None:
@@ -185,6 +193,8 @@ class RedisSMQConsumer():
                     extender = RedisSMQConsumer.VisibilityTimeoutExtender(
                         self, msg['id'])
                     extender.start()
+                    if self.decode and 'message' in msg:
+                        msg['message'] = utils.decode_message(msg['message'])
                     if self.processor(**msg):
                         self.on_success(msg)
                     else:
