@@ -13,6 +13,9 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 ## PyRSMQ Release Notes
 
+* 0.4.1
+  * Add auto-decode option for messages from JSON (when possible) in Consumer (on by default)
+
 * 0.4.0
   * Ability to import `RedisSMQ` from package rather than from the module (i.e. you can now use `from rsmq import RedisSMQ` instead of `from rsmq.rsmq import RedisSMQ`)
   * Add quiet option to most commands to allow to hide errors if exceptions are disabled
