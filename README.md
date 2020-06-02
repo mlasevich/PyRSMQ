@@ -13,6 +13,11 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 ## PyRSMQ Release Notes
 
+
+* 0.4.2
+  * Fix typo in `setClient` method [#3](https://github.com/mlasevich/PyRSMQ/issues/3)
+      * Note this is a breaking change if you use this method, (which seems like nobody does)
+
 * 0.4.1
   * Add auto-decode option for messages from JSON (when possible) in Consumer (on by default)
 

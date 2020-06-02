@@ -118,7 +118,7 @@ class RedisSMQ():
         self.options['exceptions'] = enabled == True
         return self
 
-    def setCient(self, client):
+    def setClient(self, client):
         ''' Set Redis Client '''
         self._client = client
         return self
