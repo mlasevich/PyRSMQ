@@ -3,4 +3,4 @@ fakeredis
 mock
 pylint
 pytest-cov
-six
+six >=1.12.0
