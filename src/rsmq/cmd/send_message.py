@@ -43,7 +43,7 @@ class SendMessageCommand(BaseRSMQCommand):
         delay = int(delay or 0)
 
         message = self.get_message
-        if self.get_encode or not isinstance(message, str):
+        if self.get_encode or not isinstance(message, (str, bytes)):
             message = encode_message(message)
             self.log.debug("Encoded message: %s", message)
 
