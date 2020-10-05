@@ -40,7 +40,7 @@ class SendMessageCommand(BaseRSMQCommand):
         delay = self.get_delay
         if delay is None:
             delay = queue.get('delay', 0)
-        delay = int(delay or 0)
+        delay = float(delay or 0)
 
         message = self.get_message
         if self.get_encode or not isinstance(message, str):
@@ -48,7 +48,7 @@ class SendMessageCommand(BaseRSMQCommand):
             self.log.debug("Encoded message: %s", message)
 
         tx = self.client.pipeline(transaction=True)
-        timestamp = ts + delay * 1000
+        timestamp = ts + int(round(delay * 1000))
         self.log.debug("tx.zadd(%s, %s, %s)",
                        queue_base, timestamp, message_id)
         tx.zadd(queue_base, {message_id: timestamp})
