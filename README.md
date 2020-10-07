@@ -13,6 +13,10 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 ## PyRSMQ Release Notes
 
+* 0.4.3 
+  * Don't encode sent message if it is of type bytes ([#6](https://github.com/mlasevich/PyRSMQ/issues/6))  (@yehonatanz)
+  * Allow delay and vt to be float (round only after converting to millis) ([#7](https://github.com/mlasevich/PyRSMQ/issues/7)) (@yehonatanz)
+  * Convert ts from str/bytes to int in receive/pop message ([#8](https://github.com/mlasevich/PyRSMQ/issues/8)) (@yehonatanz)
 
 * 0.4.2
   * Fix typo in `setClient` method [#3](https://github.com/mlasevich/PyRSMQ/issues/3)
