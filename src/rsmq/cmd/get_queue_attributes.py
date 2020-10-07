@@ -21,7 +21,8 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
 
     def exec_command(self):
         ''' Exec Command '''
-        now = int(time.time() * 1000)
+        secs, usecs = self.client.time()
+        now = secs * 1000 + int(usecs / 1000)
 
         queue_base = self.queue_base
         queue_key = self.queue_key
