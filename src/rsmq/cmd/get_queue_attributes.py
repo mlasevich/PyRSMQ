@@ -21,7 +21,7 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
 
     def exec_command(self):
         ''' Exec Command '''
-        now = int(time.time())
+        now = int(time.time() * 1000)
 
         queue_base = self.queue_base
         queue_key = self.queue_key
@@ -30,7 +30,7 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
         tx.hmget(queue_key, "vt", "delay", "maxsize", "totalrecv", "totalsent", "created",
                  "modified")
         tx.zcard(queue_base)
-        tx.zcount(queue_base, "%s000" % now, "+inf")
+        tx.zcount(queue_base, now, "+inf")
 
         results = tx.execute()
 
