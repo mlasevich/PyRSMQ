@@ -29,8 +29,8 @@ class ChangeMessageVisibilityCommand(BaseRSMQCommand):
         queue = self.queue_def()
 
         ts = int(queue['ts'])
-        vt = int(queue['vt'] if self.get_vt is None else self.get_vt)
-        vtimeout = ts + (vt * 1000)
+        vt = float(queue['vt'] if self.get_vt is None else self.get_vt)
+        vtimeout = ts + int(round(vt * 1000))
         result = client.evalsha(
             self.changeMessageVisibilitySha1, 3, queue_base, self.get_id, vtimeout)
         if not result:
