@@ -34,4 +34,4 @@ class ReceiveMessageCommand(BaseRSMQCommand):
         if not result:
             raise NoMessageInQueue(self.get_qname)
         [message_id, message, rc, ts] = result
-        return {'id': message_id, 'message': message, 'rc': rc, 'ts': ts}
+        return {'id': message_id, 'message': message, 'rc': rc, 'ts': int(ts)}
