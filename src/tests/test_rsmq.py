@@ -134,9 +134,9 @@ class TestUnitTests(unittest.TestCase):
         self.assertQueueAttributes(
             {'vt': '15', 'delay': '10', 'maxsize': '65565'}, queue_details)
         attributes = queue.getQueueAttributes(qname=queue_name).execute()
-        self.assertQueueAttributes({'vt': '15',
-                                    'delay': '10',
-                                    'maxsize': '65565',
+        self.assertQueueAttributes({'vt': 15,
+                                    'delay': 10,
+                                    'maxsize': 65565,
                                     'totalrecv': 0,
                                     'totalsent': 0,
                                     'msgs': 0,
@@ -145,9 +145,9 @@ class TestUnitTests(unittest.TestCase):
             vt=30, maxsize=1024, delay=1).execute()
         attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertDictEqual(attributes, attributes_1)
-        self.assertQueueAttributes({'vt': '30',
-                                    'delay': '1',
-                                    'maxsize': '1024',
+        self.assertQueueAttributes({'vt': 30,
+                                    'delay': 1,
+                                    'maxsize': 1024,
                                     'totalrecv': 0,
                                     'totalsent': 0,
                                     'msgs': 0,
@@ -169,9 +169,9 @@ class TestUnitTests(unittest.TestCase):
         self.assertQueueAttributes(
             {'vt': '15', 'delay': '10', 'maxsize': '65565'}, queue_details)
         attributes = queue.getQueueAttributes(qname=queue_name).execute()
-        self.assertQueueAttributes({'vt': '15',
-                                    'delay': '10',
-                                    'maxsize': '65565',
+        self.assertQueueAttributes({'vt': 15,
+                                    'delay': 10,
+                                    'maxsize': 65565,
                                     'totalrecv': 0,
                                     'totalsent': 0,
                                     'msgs': 0,
@@ -180,9 +180,9 @@ class TestUnitTests(unittest.TestCase):
             vt=-3, maxsize=-2, delay=-1).execute()
         attributes = queue.getQueueAttributes(qname=queue_name).execute()
         self.assertDictEqual(attributes, attributes_1)
-        self.assertQueueAttributes({'vt': '15',
-                                    'delay': '10',
-                                    'maxsize': '65565',
+        self.assertQueueAttributes({'vt': 15,
+                                    'delay': 10,
+                                    'maxsize': 65565,
                                     'totalrecv': 0,
                                     'totalsent': 0,
                                     'msgs': 0,
