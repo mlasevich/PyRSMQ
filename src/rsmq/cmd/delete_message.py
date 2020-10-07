@@ -30,6 +30,7 @@ class DeleteMessageCommand(BaseRSMQCommand):
         return False
 
     def get_transaction(self):
+        ''' Returns a transaction (pipeline), pre-populated with the deleteMessage commands '''
         client = self.client
         queue_base = self.queue_base
         queue_key = self.queue_key
