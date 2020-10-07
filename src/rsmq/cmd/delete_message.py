@@ -2,8 +2,6 @@
 
 '''
 
-from contextlib import contextmanager
-
 from .base_command import BaseRSMQCommand
 
 
@@ -41,11 +39,3 @@ class DeleteMessageCommand(BaseRSMQCommand):
         tx.hdel(queue_key, message_id, "%s:rc" %
                 message_id, "%s:fr" % message_id)
         return tx
-
-    @contextmanager
-    def transaction(self):
-        with self.get_transaction() as tx:
-            yield tx
-            # This is intentionally not inside a finally clause
-            # We do not want to ack the message if an exception occurred while handling it
-            tx.execute()
