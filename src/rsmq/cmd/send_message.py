@@ -23,15 +23,16 @@ class SendMessageCommand(BaseRSMQCommand):
                          'value': False}
               }
 
-    def exec_command(self):
+    def _get_queue_and_message_id(self):
+        queue = self.queue_def()
+        return queue, make_message_id(queue.get('ts_usec', None))
+
+    def _get_transaction(self, queue, message_id):
         ''' 
         Execute command
 
         @raise QueueDoesNotExist if queue does not exist
         '''
-        queue = self.queue_def()
-        message_id = make_message_id(queue.get('ts_usec', None))
-
         queue_key = self.queue_key
         queue_base = self.queue_base
 
@@ -55,6 +56,13 @@ class SendMessageCommand(BaseRSMQCommand):
 
         tx.hset(queue_key, message_id, message)
         tx.hincrby(queue_key, "totalsent", 1)
-        _results = tx.execute()
+        return tx
 
+    def get_transaction(self):
+        queue, message_id = self._get_queue_and_message_id()
+        return self._get_transaction(queue, message_id)
+
+    def exec_command(self):
+        queue, message_id = self._get_queue_and_message_id()
+        self._get_transaction(queue, message_id).execute()
         return message_id
