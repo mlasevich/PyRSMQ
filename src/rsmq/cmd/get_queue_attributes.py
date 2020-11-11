@@ -41,13 +41,13 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
         stats = results[0]
 
         return {
-            "vt": stats[0],
-            "delay": stats[1],
-            "maxsize": stats[2],
-            "totalrecv": stats[3] or 0,
-            "totalsent": stats[4] or 0,
-            "created": stats[5],
-            "modified": stats[6],
+            "vt": float(stats[0]),
+            "delay": float(stats[1]),
+            "maxsize": int(stats[2]),
+            "totalrecv": int(stats[3] or 0),
+            "totalsent": int(stats[4] or 0),
+            "created": int(stats[5]),
+            "modified": int(stats[6]),
             "msgs": results[1],
             "hiddenmsgs": results[2]
         }
