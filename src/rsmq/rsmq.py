@@ -29,7 +29,7 @@ class RedisSMQ():
     Redis Simple Message Queue implementation in Python
     '''
 
-    def __init__(self, client=None, host="127.0.0.1", port="6379", options=None, **kwargs):
+    def __init__(self, client=None, host="127.0.0.1", port="6379",  password=None, options=None, **kwargs):
         '''
         Constructor:
 
@@ -55,6 +55,7 @@ class RedisSMQ():
         self.redis_options = dict(DEFAULT_REDIS_OPTIONS)
         self.redis_options['host'] = host
         self.redis_options['port'] = port
+        self.redis_options['password'] = password
         if options:
             self.redis_options.update(options)
 
