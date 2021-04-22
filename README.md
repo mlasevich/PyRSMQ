@@ -12,6 +12,9 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 
 ## PyRSMQ Release Notes
+* 0.4.5
+  * Re-release to push to PyPi
+
 * 0.4.4
   * Allow extending the transaction for deleteMessage to perform other actions in same transaction ([#9](https://github.com/mlasevich/PyRSMQ/issues/9)) (@yehonatanz)
   * Use redis timestamp in milliseconds instead of local in seconds ([#11](https://github.com/mlasevich/PyRSMQ/pull/11)) (@yehonatanz)
