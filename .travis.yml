@@ -15,14 +15,12 @@ cache: pip
 
 # command to install dependencies
 install:
-  - 'pipenv install --dev'
-#  - 'pip install -r requirements-tests.txt'
-#  - 'pip install -r requirements.txt'
-#  - 'pip install coveralls'
+  - 'pip install -r requirements-tests.txt'
+  - 'pip install -r requirements.txt'
+  - 'pip install coveralls'
 
 script:
-  - 'pipenv run test'
-  #-  'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
+  -  'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
 
 after_success:
   - coveralls
