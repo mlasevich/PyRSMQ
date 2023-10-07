@@ -12,6 +12,10 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 
 ## PyRSMQ Release Notes
+* 0.5.0
+    * Code cleanup
+    * Fix for scenario where consumer breaks if redis is restarted (#4)
+
 * 0.4.5
   * Re-release to push to PyPi
 
