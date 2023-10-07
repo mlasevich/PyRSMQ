@@ -12,7 +12,6 @@ from .exceptions import QueueDoesNotExist
 from .exceptions import RedisSMQException
 from .utils import validate_int
 
-
 # REGEX matching invalid QNAME characters
 QNAME_INVALID_RE = re.compile(const.QNAME_INVALID_CHARS_RE)
 
@@ -26,7 +25,7 @@ class BaseRSMQCommand:
     }
 
     def __init__(self, rsmq, **kwargs):
-        self.log = logging.getLogger("rsmq.cmd.%s" % self.__class__.__name__)
+        self.log = logging.getLogger(f"rsmq.cmd.{self.__class__.__name__}")
         self.parent = rsmq
         self._params = {}
         # Load Defaults
@@ -38,17 +37,17 @@ class BaseRSMQCommand:
         self.__exceptions = None
 
     @property
-    def popMessageSha1(self):
+    def popMessageSha1(self):  # pylint: disable=C0103
         """popMessageSha1"""
         return self.parent.popMessageSha1
 
     @property
-    def receiveMessageSha1(self):
+    def receiveMessageSha1(self):  # pylint: disable=C0103
         """receiveMessageSha1"""
         return self.parent.receiveMessageSha1
 
     @property
-    def changeMessageVisibilitySha1(self):
+    def changeMessageVisibilitySha1(self):  # pylint: disable=C0103
         """changeMessageVisibilitySha1"""
         return self.parent.changeMessageVisibilitySha1
 
@@ -81,7 +80,7 @@ class BaseRSMQCommand:
         return [
             param
             for param, definition in self.PARAMS.items()
-            if definition.get("required", False) == True
+            if definition.get("required", False) is True
         ]
 
     def config(self, key, default_value):
@@ -137,13 +136,13 @@ class BaseRSMQCommand:
                 return self.param_get(param, default_value=None)
 
         raise AttributeError(
-            "'%s' object has no attribute '%s'" % (self.__class__.__name__, name)
+            f"'{self.__class__.__name__}' object has no attribute '{name}'"
         )
 
     def _validate_param(self, name, value):
         """Validate parameter value"""
-        if hasattr(self, "_validate_%s" % name):
-            validator = getattr(self, "_validate_%s" % name)
+        if hasattr(self, f"_validate_{name}"):
+            validator = getattr(self, f"_validate_{name}")
             return validator(value)
         return self._default_validator(name, value)
 
@@ -243,9 +242,9 @@ class BaseRSMQCommand:
         if not results or results[0][0] is None:
             raise QueueDoesNotExist(self.get_queue)
         stats = results[0]
-        redisTime = results[1]
+        redis_time = results[1]
 
-        ts_usec = redisTime[0] * 1000000 + redisTime[1]
+        ts_usec = redis_time[0] * 1000000 + redis_time[1]
         ts = int(ts_usec / 1000)
 
         return {

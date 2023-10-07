@@ -1,5 +1,5 @@
 """
-
+Change Message Visibility
 """
 
 from .base_command import BaseRSMQCommand
