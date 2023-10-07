@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+
+  producer: &python
+    image: python:3.9
+    volumes:
+      - ..:/src
+      - .:/examples
+    command: [ "/examples/run-example", "producer.py", "-H", "redis" ]
+
+  consumer:
+    <<: *python
+    command: [ "/examples/run-example", "consumer.py", "-H", "redis" ]
