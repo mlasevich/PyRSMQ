@@ -6,8 +6,10 @@ import logging
 import time
 from threading import Thread
 
-from rsmq.cmd.exceptions import NoMessageInQueue
+from redis.exceptions import NoScriptError
+
 from .cmd import utils
+from .cmd.exceptions import NoMessageInQueue
 from .cmd.exceptions import RedisSMQException
 from .rsmq import RedisSMQ
 from .rsmq import const
@@ -216,6 +218,10 @@ class RedisSMQConsumer:
                     time.sleep(delay)
             except RedisSMQException as ex:
                 LOG.warning("Exception while processing queue `%s`: %s", self.qname, ex)
+            except NoScriptError as ex:
+                LOG.warning("Exception while processing queue `%s`: %s", self.qname, ex)
+                LOG.warning("Resetting the client")
+                self.rsqm.reset_scripts()
         self._request_stop = None
         self.trace("Ended Queue Consumer for %s", self.qname)
 

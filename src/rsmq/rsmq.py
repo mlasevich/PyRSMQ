@@ -167,3 +167,9 @@ class RedisSMQ:
     def quit(self):
         """Quit - here for compatibility purposes"""
         self._client = None
+
+    def reset_scripts(self):
+        """ Reset scripts to forse re-load """
+        self._popMessageSha1 = None
+        self._receiveMessageSha1 = None
+        self._changeMessageVisibilitySha1 = None
