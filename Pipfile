@@ -7,7 +7,7 @@ verify_ssl = true
 test = 'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
 
 [dev-packages]
-fakeredis = "*"
+fakeredis = ">=0.4.3"
 pytest-cov = "*"
 pylint = "*"
 mock = "*"
