@@ -1,35 +1,31 @@
-'''
+"""
 
-'''
+"""
 import time
 from .base_command import BaseRSMQCommand
 
 
 class SetQueueAttributesCommand(BaseRSMQCommand):
-    '''
+    """
     Get Queue Attributes if does not exist
-    '''
+    """
 
-    PARAMS = {'qname': {'required': True,
-                        'value': None},
-              'vt': {'required': False,
-                     'value': None},
-              'delay': {'required': False,
-                        'value': None},
-              'maxsize': {'required': False,
-                          'value': None},
-              'quiet': {'required': False,
-                        'value': False}
-              }
+    PARAMS = {
+        "qname": {"required": True, "value": None},
+        "vt": {"required": False, "value": None},
+        "delay": {"required": False, "value": None},
+        "maxsize": {"required": False, "value": None},
+        "quiet": {"required": False, "value": False},
+    }
 
     def exec_command(self):
-        ''' Exec Command '''
+        """Exec Command"""
         now = int(time.time())
 
         queue_key = self.queue_key
 
         tx = self.client.pipeline(transaction=True)
-        for param in ['vt', 'delay', 'maxsize']:
+        for param in ["vt", "delay", "maxsize"]:
             value = self.param_get(param, default_value=None)
             if value is not None:
                 tx.hset(queue_key, param, value)

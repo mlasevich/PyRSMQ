@@ -1,24 +1,23 @@
-'''
+"""
 Delete Queue Command
-'''
+"""
 
 from .base_command import BaseRSMQCommand
 from .exceptions import QueueDoesNotExist
 
 
 class DeleteQueueCommand(BaseRSMQCommand):
-    '''
+    """
     Delete Queue if it exists
-    '''
+    """
 
-    PARAMS = {'qname': {'required': True,
-                        'value': None},
-              'quiet': {'required': False,
-                        'value': False}
-              }
+    PARAMS = {
+        "qname": {"required": True, "value": None},
+        "quiet": {"required": False, "value": False},
+    }
 
     def exec_command(self):
-        ''' Exec Command '''
+        """Exec Command"""
         client = self.client
 
         queue_name = self.queue_base

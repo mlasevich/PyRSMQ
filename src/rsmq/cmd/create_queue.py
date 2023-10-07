@@ -1,6 +1,6 @@
-'''
+"""
 
-'''
+"""
 import time
 
 from .. import const
@@ -9,24 +9,20 @@ from .exceptions import QueueAlreadyExists
 
 
 class CreateQueueCommand(BaseRSMQCommand):
-    '''
+    """
     Create Queue if does not exist
-    '''
+    """
 
-    PARAMS = {'qname': {'required': True,
-                        'value': None},
-              'vt': {'required': True,
-                     'value': const.VT_DEFAULT},
-              'delay': {'required': True,
-                        'value': const.DELAY_DEFAULT},
-              'maxsize': {'required': True,
-                          'value': const.MAXSIZE_DEFAULT},
-              'quiet': {'required': False,
-                        'value': False}
-              }
+    PARAMS = {
+        "qname": {"required": True, "value": None},
+        "vt": {"required": True, "value": const.VT_DEFAULT},
+        "delay": {"required": True, "value": const.DELAY_DEFAULT},
+        "maxsize": {"required": True, "value": const.MAXSIZE_DEFAULT},
+        "quiet": {"required": False, "value": False},
+    }
 
     def exec_command(self):
-        ''' Exec Command '''
+        """Exec Command"""
         client = self.client
         now = int(time.time())
 

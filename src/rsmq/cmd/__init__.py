@@ -1,6 +1,6 @@
-'''
+"""
 Commands
-'''
+"""
 
 from .change_message_visibility import ChangeMessageVisibilityCommand
 from .create_queue import CreateQueueCommand

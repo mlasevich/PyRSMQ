@@ -1,4 +1,3 @@
-
 from pprint import pprint
 import time
 
@@ -20,7 +19,7 @@ queue.createQueue(delay=0).vt(20).execute()
 # Send a message with a 2 second delay
 message_id = queue.sendMessage(delay=2).message("Hello World").execute()
 
-pprint({'queue_status': queue.getQueueAttributes().execute()})
+pprint({"queue_status": queue.getQueueAttributes().execute()})
 
 # Try to get a message - this will not succeed, as our message has a delay and no other
 # messages are in the queue
@@ -33,7 +32,7 @@ print("Waiting for our message to become visible")
 # Wait for our message to become visible
 time.sleep(2)
 
-pprint({'queue_status': queue.getQueueAttributes().execute()})
+pprint({"queue_status": queue.getQueueAttributes().execute()})
 # Get our message
 msg = queue.receiveMessage().execute()
 
@@ -41,9 +40,9 @@ msg = queue.receiveMessage().execute()
 pprint({"Message": msg})
 
 # Delete Message
-queue.deleteMessage(id=msg['id'])
+queue.deleteMessage(id=msg["id"])
 
-pprint({'queue_status': queue.getQueueAttributes().execute()})
+pprint({"queue_status": queue.getQueueAttributes().execute()})
 # delete our queue
 queue.deleteQueue().execute()
 
