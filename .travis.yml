@@ -15,7 +15,7 @@ cache: pip
 
 # command to install dependencies
 install:
-  - 'pipenv sync'
+  - 'pipenv install --dev'
 #  - 'pip install -r requirements-tests.txt'
 #  - 'pip install -r requirements.txt'
 #  - 'pip install coveralls'
