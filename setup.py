@@ -45,6 +45,7 @@ PKG_INFO.update(
         ],
         "long_description": long_description,
         "long_description_content_type": "text/markdown",
+        "python_requires": '>=3.6',
         "classifiers": [
             "Programming Language :: Python :: 3",
             "License :: OSI Approved :: Apache Software License",
