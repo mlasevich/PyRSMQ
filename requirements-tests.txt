@@ -1,5 +1,5 @@
 # Unit test reqirements
-fakeredis
+fakeredis == 1.7.1
 mock
 pylint
 pytest-cov

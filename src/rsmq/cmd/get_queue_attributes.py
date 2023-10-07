@@ -1,6 +1,6 @@
-'''
+"""
 GetQueueAttributes Command
-'''
+"""
 
 import time
 
@@ -9,18 +9,17 @@ from .exceptions import QueueDoesNotExist
 
 
 class GetQueueAttributesCommand(BaseRSMQCommand):
-    '''
+    """
     Get Queue Attributes from existing queue
-    '''
+    """
 
-    PARAMS = {'qname': {'required': True,
-                        'value': None},
-              'quiet': {'required': False,
-                        'value': False}
-              }
+    PARAMS = {
+        "qname": {"required": True, "value": None},
+        "quiet": {"required": False, "value": False},
+    }
 
     def exec_command(self):
-        ''' Exec Command '''
+        """Exec Command"""
         secs, usecs = self.client.time()
         now = secs * 1000 + int(usecs / 1000)
 
@@ -28,8 +27,16 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
         queue_key = self.queue_key
 
         tx = self.client.pipeline(transaction=True)
-        tx.hmget(queue_key, "vt", "delay", "maxsize", "totalrecv", "totalsent", "created",
-                 "modified")
+        tx.hmget(
+            queue_key,
+            "vt",
+            "delay",
+            "maxsize",
+            "totalrecv",
+            "totalsent",
+            "created",
+            "modified",
+        )
         tx.zcard(queue_base)
         tx.zcount(queue_base, now, "+inf")
 
@@ -49,5 +56,5 @@ class GetQueueAttributesCommand(BaseRSMQCommand):
             "created": int(stats[5]),
             "modified": int(stats[6]),
             "msgs": results[1],
-            "hiddenmsgs": results[2]
+            "hiddenmsgs": results[2],
         }
