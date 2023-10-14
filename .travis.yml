@@ -1,31 +1,23 @@
 language: python
 dist: focal
-
 python:
-#  - "3.6""
-  - "3.7"
-#  - "3.9"
-
+- '3.7'
 cache: pip
-
-# command to install dependencies
 install:
-  - 'pip install -r requirements-tests.txt'
-  - 'pip install -r requirements.txt'
-  - 'pip install coveralls'
-
+- pip install -r requirements-tests.txt
+- pip install -r requirements.txt
+- pip install coveralls
 script:
-  -  'python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src .'
-
+- python -m pytest --junitxml ./reports/results.xml --cov-config .coveragerc --cov=src
+  .
 after_success:
-  - coveralls
-
+- coveralls
 deploy:
   provider: pypi
-  user: mlasevich
+  username: __token__
   password:
-    secure: "a8sG1opQRUIKysqryuj0TbzPqSS5SqobUhEX3E/31LJiBYWAhfsVajdpaGYUfhxug926lIGxrhkPRbBKRmwD3PesITv4Seddjw9Q6GYYFtqvuam3zYCgsE5091gg+MLgnAwAbfUulIla9yBPOqVNIFTlc0PJm8d/GLfPjtByo1DhCbx2/EeCFXfsquGxibNeCk1V4qn50o+j6n61ApGvNkWV9XWWa0ASam8PK9VZ7fiymH3TEObz1IV3FKFyXoQoNGWlqud8HZy6nNabC9Q1wL7QkJOIiTcb/6ywXwS2BNxRTWQefflhn4kRLXTE+mpChrGNynPgjoPpRtPxPgwN71PIdFTo3nx3xKzqLxHTH5ILD1YrxNXWNXHp3Bfa+B7RPDRtXQFT/27eWoubfnuXutfdfXJjRvrwErhVtmh7PmF0/mtVFlJ5N9y+YiulJQK4So3AXwY3P+jETytxBW280HTZrLXN4oiZ9hvitCHM/UISbdghEuOciyetpbo8cFY++3gXGdOEVLJEjPtDJFxuOjKMqRMGV+oK4X/neP+BTY2FgbUu3SVzwCOviVabQ8WweqM2lETT638s4NEHFkxQ3nF4gCdFPj52Duokf2czdH/XRsMQgyBneuNL8Tcg6CyXhw9ElRHI8DVemBTh19qDH+XsoTGAI5TBfYx4ACp8HRg="
+    secure: D4GWifPMb5DOhRnJbKt8IlQfjhA8AuiV1+YtHxzOUvFD02g8SRDc3cuTmGvgF3Rbv8GMpzztJrVeZrsgKu2IuxOowXdg7qYcKAFBtRVG5mRwXFPqUk/vb2AnmsUUl0aE7v9u/RLqmkAQTGxGlkdUnVO3ZShQVr4peDclexjCN7FcK1y4Gv86FwNZ4QGDQOoePKuvK/p+eaVj1VJmYxQvc4olQphQ/ZMAH7apRdWvX52/UaYeeqfDul+PsRjHCADjVJgLb/arV7aGzckTrG28zVOnsHyPodoDLibsOkj9QYFANfUhIlQcAkhzIDTa9lKM+vWCtzpBFTZbrn3bN1G4OTWThvDKY63hc2lmXzoIyM4wMojiv6pAvr7aVfGJsmsbolBtX37cScIzzSvMbaVzx3i5Cs1/JQW/JnE4B6qYG2xGd9Lbl3kRmSH8ZMxtcmdPZUZTFj82N03Nv0tFeLUwhUb7fjCAqQFt3Cda2fCfuQiq40qp0fs07wEStaA3tBU+0VK7xthcYi6nn3ap4bDNmZjBiOZ0rJudUoCeV02r18qVH/0ucwcwhKH4RHjJsSFCk4npWrXrhtLJ0D3VsO3KwLWqt8Xa09cVSl4ZWWYmumoqs4corwKcr6hvXGeUesee4xMEjtZGMMs9OT4Qrjh4SYGt+r1oTJaP5hdYzwS6x08=
   skip_existing: true
-  distributions: "sdist bdist_wheel"
+  distributions: sdist bdist_wheel
   on:
     tags: true
