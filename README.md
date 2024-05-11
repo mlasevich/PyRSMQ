@@ -12,6 +12,9 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 
 ## PyRSMQ Release Notes
+* 0.5.1
+   * Bugfix: Fix crash on non-existent queue name (Thanks @rwl4)
+
 * 0.5.0
     * Require Python 3.6+
     * Code cleanup
