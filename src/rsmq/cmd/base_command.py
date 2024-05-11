@@ -240,7 +240,7 @@ class BaseRSMQCommand:
         results = tx.execute()
 
         if not results or results[0][0] is None:
-            raise QueueDoesNotExist(self.get_queue)
+            raise QueueDoesNotExist(self.get_qname)
         stats = results[0]
         redis_time = results[1]
 
