@@ -12,6 +12,8 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 
 ## PyRSMQ Release Notes
+* 0.6.0
+  * Bugfix: Allow for recovery in RedisSMQConsumerThread when redis is temporarily unavailable.
 * 0.5.1
    * Bugfix: Fix crash on non-existent queue name (Thanks @rwl4)
 
