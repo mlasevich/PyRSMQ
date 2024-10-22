@@ -11,6 +11,7 @@ from redis.exceptions import NoScriptError
 from .cmd import utils
 from .cmd.exceptions import NoMessageInQueue
 from .cmd.exceptions import RedisSMQException
+from .retry_delay_handler import RetryDelayHandler
 from .rsmq import RedisSMQ
 from .rsmq import const
 
@@ -26,7 +27,7 @@ class RedisSMQConsumer:
     LOCAL_PARAMS = {"retry_delay": 0, "empty_queue_delay": 2.0, "decode": True}
 
     class VisibilityTimeoutExtender(Thread):
-        """Thread that keeps the visibility"""
+        """ Thread that keeps the visibility """
 
         def __init__(self, consumer, message_id):
             """Initialize"""
@@ -94,8 +95,10 @@ class RedisSMQConsumer:
         @param processor: processor for each item
 
         Optional Parameters:
-        @param retry_delay: amount of time, in seconds, before failed item is retried
-        @param empty_queue_delay: (float) Amount of time, in seconds, to wait if no items in queue
+        @param retry_delay: amount of time, in seconds, before failed item is
+        retried
+        @param empty_queue_delay: (float) Amount of time, in seconds, to wait
+        if no items in queue
 
         Remaining args are passed to RedisSMQ()
 
@@ -121,7 +124,8 @@ class RedisSMQConsumer:
 
     def _param(self, param, default_value=None):
         """get local param"""
-        return self.params.get(param, self.LOCAL_PARAMS.get(param, default_value))
+        return self.params.get(param,
+                               self.LOCAL_PARAMS.get(param, default_value))
 
     @property
     def retry_delay(self):
@@ -181,7 +185,8 @@ class RedisSMQConsumer:
 
     def create_queue(self):
         """Create queue if it does not exists"""
-        self.rsqm.createQueue(qname=self.qname, quiet=True).exceptions(False).execute()
+        self.rsqm.createQueue(qname=self.qname, quiet=True).exceptions(
+            False).execute()
 
     def trace(self, fmt, *args):
         """Print trace log messages for debugging, if enabled"""
@@ -192,6 +197,7 @@ class RedisSMQConsumer:
         """main loop of the thread"""
         self.trace("Starting Queue Consumer for %s", self.qname)
         self.create_queue()
+        retry_delay = RetryDelayHandler(0, 60)
         while not self._request_stop:
             try:
                 msg = self.rsqm.receiveMessage().execute()
@@ -207,6 +213,7 @@ class RedisSMQConsumer:
                     else:
                         self.on_failure(msg)
                     extender.stop()
+                    retry_delay.reset()
                 else:
                     raise RedisSMQException(
                         "Invalid message in queue '%s': %s" % (self.qname, msg)
@@ -217,11 +224,24 @@ class RedisSMQConsumer:
                 if delay:
                     time.sleep(delay)
             except RedisSMQException as ex:
-                LOG.warning("Exception while processing queue `%s`: %s", self.qname, ex)
+                LOG.warning("Exception while processing queue `%s`: %s",
+                            self.qname, ex)
             except NoScriptError as ex:
-                LOG.warning("Exception while processing queue `%s`: %s", self.qname, ex)
+                LOG.warning("Exception while processing queue `%s`: %s",
+                            self.qname, ex)
+                retry_delay.delay()
                 LOG.warning("Resetting the client")
                 self.rsqm.reset_scripts()
+            except ConnectionError as ex:
+                LOG.warning("Connection error while processing queue `%s`: %s",
+                            self.qname, ex)
+                retry_delay.delay()
+            except Exception as ex:
+                LOG.warning("Unexpected error while processing queue `%s`: %s",
+                            self.qname, ex)
+                retry_delay.delay()
+            self.rsqm.reset_scripts()
+
         self._request_stop = None
         self.trace("Ended Queue Consumer for %s", self.qname)
 
