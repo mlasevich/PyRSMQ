@@ -2,8 +2,8 @@
 Example Producer for a queue
 
 
-In this example we create RedisSMQ controller and using it to send messages to that at
-regular intervals
+In this example we create RedisSMQ controller and using it to send messages
+to that at regular intervals
 
 """
 import argparse
@@ -16,6 +16,8 @@ from rsmq import RedisSMQ
 
 LOG = logging.getLogger("Producer")
 
+MAX_DELAY  = 30
+
 redis_host = os.environ.get("REDIS_HOST", "127.0.0.1")
 
 
@@ -26,7 +28,8 @@ def create_message(msg_number):
 
 def produce(rsmq, long_qname, count, interval):
     LOG.info(
-        "Starting producer for queue '%s' - sending %s messages every %s seconds...",
+        "Starting producer for queue '%s' - sending %s messages every %s "
+        "seconds...",
         long_qname,
         count,
         interval,
@@ -45,7 +48,7 @@ def produce(rsmq, long_qname, count, interval):
     LOG.info("Ended producer after sending %s messages.", msg_count)
 
 
-def main(argv=None):
+def loop(argv=None):
     if argv is None:
         argv = sys.argv
     """ Parse args and run producer """
@@ -153,13 +156,29 @@ def main(argv=None):
     )
 
     if args.delete:
-        rsqm.deleteQueue(qname=args.queue, quiet=True).exceptions(False).execute()
+        rsqm.deleteQueue(qname=args.queue, quiet=True).exceptions(
+            False).execute()
 
     # Create queue if it is missing. Swallow errors if already exists
     rsqm.createQueue(qname=args.queue, quiet=True).exceptions(False).execute()
 
     # Start Producing
     produce(rsqm, "%s:%s" % (args.ns, args.queue), args.count, args.interval)
+
+
+def main(argv=None):
+    """ Main with retry """
+    delay = 1
+    while True:
+        try:
+            loop(argv)
+            delay = 1
+        except Exception as ex:
+            LOG.error("Error: %s", ex)
+        LOG.info("Sleeping %s seconds before restarting...", delay)
+        time.sleep(delay)
+        delay *= 2
+        delay = min(delay, MAX_DELAY)
 
 
 if __name__ == "__main__":
