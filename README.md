@@ -12,6 +12,10 @@ This is a Python implementation of [https://github.com/smrchy/rsmq](https://gith
 
 
 ## PyRSMQ Release Notes
+
+* 0.6.1
+  * Bugfix: Fix incomplete delete of queue data when redis auto-decode is off (#23) (@ChuckHend)
+
 * 0.6.0
   * Bugfix: Allow for recovery in RedisSMQConsumerThread when redis is temporarily unavailable.
 * 0.5.1
