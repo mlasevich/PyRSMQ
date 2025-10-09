@@ -11,10 +11,9 @@ import argparse
 import logging
 import random
 import sys
-from threading import Thread
 import time
 
-from rsmq.consumer import RedisSMQConsumer
+from rsmq.consumer import RedisSMQConsumerThread
 
 
 LOG = logging.getLogger("Consumer")
@@ -26,6 +25,11 @@ class Processor(object):
     def __init__(self, delay, success_rate):
         self.delay = delay
         self.success_rate = success_rate
+
+    @property
+    def wait_delay(self):
+        """ Get random wait delay """
+        return random.randint(0, self.delay*1000)/1000
 
     def random_result(self):
         """
@@ -42,22 +46,22 @@ class Processor(object):
             % (id, rc, ts, message)
         )
         result = self.random_result()
-        delay = self.delay
+        delay = self.wait_delay
         if delay > 0:
             # Add occasional long delay
             # if random.randint(0, 10) == 0:
             #    delay = 60
             LOG.info("Processing message: %s for %s seconds", id, delay)
             time.sleep(delay)
-        # LOG.info("Random Result: %s", "Success" if result else "Failure")
+        LOG.info("Random Result: %s", "Success" if result else "Failure")
         return result
 
 
 def consume(consumer, long_qname, exit_after):
     """Example of consuming using a thread"""
     LOG.info("Starting consumption on queue: %s", long_qname)
-    thread = Thread(target=consumer.run, name="QueueConumer", daemon=False)
-    thread.start()
+    # thread = Thread(target=consumer.run, name="QueueConsumer", daemon=False)
+    # thread.start()
     end = time.time() + exit_after if exit_after else 0
     while True:
         if exit_after and time.time() > end:
@@ -67,7 +71,7 @@ def consume(consumer, long_qname, exit_after):
     LOG.info(
         "Exited queue consumer for '%s'. Thread is %s",
         long_qname,
-        ("running" if thread.is_alive() else "stopped"),
+        ("running" if consumer.is_alive() else "stopped"),
     )
 
 
@@ -182,7 +186,9 @@ def main(argv=None):
         args.ns,
         args.queue,
     )
-    rsqm_consumer = RedisSMQConsumer(
+    LOG.info("Starting consumer thread")
+
+    rsqm_consumer = RedisSMQConsumerThread(
         qname=args.queue,
         processor=processor.process,
         host=args.host,
@@ -192,9 +198,12 @@ def main(argv=None):
         empty_queue_delay=args.empty_queue_delay,
         trace=args.trace,
     )
-
+    rsqm_consumer.start()
+    while rsqm_consumer.is_alive():
+        time.sleep(1)
+    LOG.info("Complete consumer thread")
     # Start Consumption
-    consume(rsqm_consumer, "%s:%s" % (args.ns, args.queue), args.exit_after)
+    #consume(rsqm_consumer, "%s:%s" % (args.ns, args.queue), args.exit_after)
 
 
 if __name__ == "__main__":
